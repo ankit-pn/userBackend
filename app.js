@@ -65,7 +65,7 @@ app.post("/addItems", async (request, response) => {
     }
     else {
         item[0].quantity += quantity;
-        const ittem = await items.findOneAndUpdate({ userId: userId, itemId: itemId},{quantity:item[0].quantity})
+        const ittem = await items.findOneAndUpdate({ userId: userId, itemId: itemId }, { quantity: item[0].quantity })
             .then((result) => {
                 response.status(201).send({
                     message: "items Saved Suceessfully",
@@ -101,6 +101,36 @@ app.post('/getItems', async (request, response) => {
 })
 
 
+
+
+// register endpoint
+app.post('/deleteItems', async (request, response) => {
+    const userId = request.body.userId;
+    const itemId = request.body.itemId;
+    // const quantity = request.body.quantity;
+    await items.deleteOne({
+        userId: userId,
+        itemId:itemId
+    })
+        // save the new user
+        // date.save()
+        // return success if the new user is added to the database successfully
+        .then((result) => {
+            response.status(201).send({
+                message: "Date Deleted Succesfully",
+                result,
+            });
+        })
+        // catch error if the new user wasn't added successfully to the database
+        .catch((error) => {
+            response.status(500).send({
+                message: "Error Saving Date",
+                error,
+            });
+        });
+    // const resp = await item.length ? { "itemsList": item } : { "message": "No Records Found" }
+    // await response.json(resp)
+})
 
 
 
