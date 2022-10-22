@@ -37,7 +37,7 @@ app.post("/addItems", async (request, response) => {
 
     const userId = request.body.userId;
     const itemId = request.body.itemId;
-    const quantity = request.body.quantity;
+    const quantity = parseInt(request.body.quantity);
     const item = await items.find({ userId: userId, itemId: itemId });
     if (item.length === 0) {
         const date = new items({
@@ -64,8 +64,8 @@ app.post("/addItems", async (request, response) => {
             });
     }
     else {
-        item[0].quantity += quantity;
-        const ittem = await items.findOneAndUpdate({ userId: userId, itemId: itemId }, { quantity: item[0].quantity })
+        const fvalue = parseInt(item[0].quantity)+quantity
+        const ittem = await items.findOneAndUpdate({ userId: userId, itemId: itemId }, { quantity: fvalue })
             .then((result) => {
                 response.status(201).send({
                     message: "items Saved Suceessfully",
